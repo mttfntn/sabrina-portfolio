@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { AUDIOS } from '~/composables/useAppState'
 const { showPaper, showStamps, stampBlue, images, reset } = useAppState()
+const { app: { baseURL } } = useRuntimeConfig()
+const asset = (path: string) => baseURL.replace(/\/$/, '') + path
 
 function setAudio(i: number, val: string) {
   const arr = images.value.slice()
@@ -92,7 +94,7 @@ function basename(src: string) {
         >
           <span class="idx">{{ String(i + 1).padStart(2, '0') }}</span>
           <img
-            :src="img.src"
+            :src="asset(img.src)"
             :style="img.rotate ? `transform:rotate(${img.rotate}deg)` : ''"
             class="thumb"
             draggable="false"

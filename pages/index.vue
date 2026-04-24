@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { images } = useAppState()
+const { app: { baseURL } } = useRuntimeConfig()
+const asset = (path: string) => baseURL.replace(/\/$/, '') + path
 
 const widths = [52, 40, 62, 45, 56, 38, 58, 48, 55, 42]
 
@@ -69,14 +71,14 @@ function scrollToTop() {
         <div class="slot-inner" :style="{ maxWidth: widths[i % widths.length] + 'vw' }">
           <figure class="item">
             <img
-              :src="img.src"
+              :src="asset(img.src)"
               :alt="`Photo ${i + 1}`"
               :style="{ transform: img.rotate ? `rotate(${img.rotate}deg)` : undefined }"
             />
           </figure>
           <audio
             v-if="img.audio"
-            :src="`/audios/${img.audio}`"
+            :src="asset(`/audios/${img.audio}`)"
             controls
             class="audio-player"
           />
