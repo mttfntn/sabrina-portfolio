@@ -45,15 +45,17 @@ export const DEFAULT_IMAGES: ImageConfig[] = [
 ]
 
 export function useAppState() {
-  const showPaper  = useState<boolean>('dbg-paper',  () => true)
-  const showStamps = useState<boolean>('dbg-stamps', () => true)
-  const images     = useState<ImageConfig[]>('dbg-images', () => DEFAULT_IMAGES.map(i => ({ ...i })))
+  const showPaper   = useState<boolean>('dbg-paper',      () => true)
+  const showStamps  = useState<boolean>('dbg-stamps',     () => true)
+  const stampBlue   = useState<boolean>('dbg-stamp-blue', () => false)
+  const images      = useState<ImageConfig[]>('dbg-images', () => DEFAULT_IMAGES.map(i => ({ ...i })))
 
   function save() {
     if (!import.meta.client) return
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       showPaper:  showPaper.value,
       showStamps: showStamps.value,
+      stampBlue:  stampBlue.value,
       images:     images.value,
     }))
   }
@@ -66,6 +68,7 @@ export function useAppState() {
       const s = JSON.parse(raw)
       if (typeof s.showPaper  === 'boolean') showPaper.value  = s.showPaper
       if (typeof s.showStamps === 'boolean') showStamps.value = s.showStamps
+      if (typeof s.stampBlue  === 'boolean') stampBlue.value  = s.stampBlue
       if (Array.isArray(s.images) && s.images.length) images.value = s.images
     } catch {}
   }
@@ -74,5 +77,5 @@ export function useAppState() {
     images.value = DEFAULT_IMAGES.map(i => ({ ...i }))
   }
 
-  return { showPaper, showStamps, images, save, load, reset }
+  return { showPaper, showStamps, stampBlue, images, save, load, reset }
 }

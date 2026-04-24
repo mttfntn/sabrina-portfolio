@@ -37,11 +37,11 @@ const stamps: Stamp[] = [
   { top: 98, left: 52, w: 56, rotate: 180, opacity: 0.3}
 ]
 
-const { showStamps } = useAppState()
+const { showStamps, stampBlue } = useAppState()
 </script>
 
 <template>
-  <div v-show="showStamps" class="stamps" aria-hidden="true">
+  <div v-show="showStamps" class="stamps" :class="{ 'stamps--blue': stampBlue }" aria-hidden="true">
     <div
       v-for="(s, i) in stamps"
       :key="i"
@@ -67,5 +67,8 @@ html.hide-paper body {
 html.hide-paper body::before,
 html.hide-paper body::after {
   display: none !important;
+}
+.stamps--blue .stamp {
+  filter: sepia(1) saturate(4) hue-rotate(190deg);
 }
 </style>

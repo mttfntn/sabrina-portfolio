@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AUDIOS } from '~/composables/useAppState'
-const { showPaper, showStamps, images, reset } = useAppState()
+const { showPaper, showStamps, stampBlue, images, reset } = useAppState()
 
 function setAudio(i: number, val: string) {
   const arr = images.value.slice()
@@ -63,6 +63,10 @@ function basename(src: string) {
       <label class="row">
         <input type="checkbox" v-model="showStamps" />
         Image.png
+      </label>
+      <label class="row" :class="{ disabled: !showStamps }">
+        <input type="checkbox" v-model="stampBlue" :disabled="!showStamps" />
+        Image.png — blue filter
       </label>
 
       <div class="divider" />
@@ -213,6 +217,11 @@ function basename(src: string) {
     accent-color: #ccc;
     cursor: pointer;
   }
+}
+
+.row.disabled {
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .divider {
