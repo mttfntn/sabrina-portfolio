@@ -197,8 +197,10 @@ function scrollToTop() {
   }
 
   .title-bar h1 {
-    font-size: 2.2rem;
-    gap: 0.5rem;
+    font-size: clamp(1.1rem, 6vw, 2.2rem);
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .title-bar .subtitle {
