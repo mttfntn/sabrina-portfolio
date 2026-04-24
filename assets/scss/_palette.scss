@@ -1,0 +1,13 @@
+// Site palette
+// Use via: @use 'palette' as p;
+// Example: color: p.$text;
+
+$bg:          #eef1f5;   // page background — cool off-white with blue hint
+$surface:     #000000;   // image placeholder fill
+$text:        #000000;   // primary text — black
+$text-muted:  rgba(0, 0, 0, 0.55);
+
+$line:        #000000;   // progress indicator fill
+$line-track:  rgba(0, 0, 0, 0.15); // progress rail background
+
+$radius:      0;
