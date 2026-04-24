@@ -37,11 +37,13 @@ onMounted(() => {
   })
 })
 
-const hoveringTop = ref(false)
-
 function scrollToTop() {
   const { $lenis } = useNuxtApp() as unknown as { $lenis: LenisLike }
-  $lenis?.scrollTo?.(0, { duration: 1.5, force: true, lock: true })
+  $lenis?.scrollTo?.(0, {
+    duration: 1.8,
+    force: true,
+    easing: (t: number) => 1 - Math.pow(1 - t, 4)
+  })
 }
 </script>
 
@@ -53,7 +55,7 @@ function scrollToTop() {
         <span class="diamond" aria-hidden="true" />
         <span>Studio Fe</span>
       </h1>
-      <p class="subtitle">Sabrina Djelloul, Classe 91 Artist. Born in Algeria, based in Italy</p>
+      <p class="subtitle">Classe 91 Artist. Born in Algeria, Based in Italy.</p>
     </header>
 
     <div class="progress-rail" aria-hidden="true">
@@ -73,6 +75,9 @@ function scrollToTop() {
             <img
               :src="asset(img.src)"
               :alt="`Photo ${i + 1}`"
+              :loading="i === 0 ? 'eager' : 'lazy'"
+              :fetchpriority="i === 0 ? 'high' : 'auto'"
+              decoding="async"
               :style="{ transform: img.rotate ? `rotate(${img.rotate}deg)` : undefined }"
             />
           </figure>
@@ -89,13 +94,11 @@ function scrollToTop() {
     <button
       type="button"
       class="to-top"
-      :class="{ visible: progress > 0.05 }"
+      :class="{ visible: progress > 0 }"
       aria-label="Scroll to top"
-      @mouseenter="hoveringTop = true"
-      @mouseleave="hoveringTop = false"
       @click="scrollToTop"
     >
-      <InkDrip :active="hoveringTop" class="ink-layer" />
+      <img src="/Chevron.svg" class="chevron-icon" alt="" />
     </button>
   </main>
 </template>
@@ -139,8 +142,8 @@ function scrollToTop() {
 
   .diamond {
     display: inline-block;
-    width: 0.3em;
-    height: 0.3em;
+    width: 0.15em;
+    height: 0.15em;
     background: p.$text;
     transform: rotate(45deg);
   }
@@ -188,13 +191,41 @@ function scrollToTop() {
   height: 36px;
 }
 
+@media (max-width: 768px) {
+  .page {
+    padding: 0 3vw 8vh;
+  }
+
+  .title-bar h1 {
+    font-size: 2.2rem;
+    gap: 0.5rem;
+  }
+
+  .title-bar .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .slot {
+    height: auto;
+    padding: 12vw 0;
+  }
+
+  .slot-inner {
+    max-width: 88vw !important;
+  }
+
+  .item img {
+    max-height: 75vw;
+  }
+}
+
 .progress-rail {
   position: fixed;
   top: 0;
   right: 0;
-  width: 2px;
+  width: 3px;
   height: 100vh;
-  background: p.$line-track;
+  background: transparent;
   z-index: 25;
   pointer-events: none;
 }
@@ -219,22 +250,23 @@ function scrollToTop() {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(8px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
   z-index: 30;
 
   &.visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
   }
 
-  .ink-layer {
+  .chevron-icon {
     display: block;
-    width: 80px;
-    height: 50px;
+    width: 36px;
+    height: auto;
+    opacity: 0.45;
   }
 
+  &:hover .chevron-icon {
+    opacity: 1;
+  }
 }
 
 </style>
