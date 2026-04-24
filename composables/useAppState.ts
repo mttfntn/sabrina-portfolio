@@ -105,7 +105,12 @@ export function useAppState() {
       if (typeof s.showPaper  === 'boolean') showPaper.value  = s.showPaper
       if (typeof s.showStamps === 'boolean') showStamps.value = s.showStamps
       if (typeof s.stampBlue  === 'boolean') stampBlue.value  = s.stampBlue
-      if (Array.isArray(s.images) && s.images.length) images.value = s.images
+      if (Array.isArray(s.images) && s.images.length) {
+        const saved = s.images as ImageConfig[]
+        const savedSrcs = new Set(saved.map((i: ImageConfig) => i.src))
+        const newOnes = DEFAULT_IMAGES.filter(i => !savedSrcs.has(i.src))
+        images.value = [...saved, ...newOnes]
+      }
     } catch {}
   }
 
