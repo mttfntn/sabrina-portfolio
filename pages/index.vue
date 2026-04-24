@@ -3,6 +3,16 @@ const { images } = useAppState()
 const { app: { baseURL } } = useRuntimeConfig()
 const asset = (path: string) => baseURL.replace(/\/$/, '') + path
 
+useHead({
+  link: computed(() =>
+    images.value.slice(0, 9).map(img => ({
+      rel: 'preload',
+      as: 'image',
+      href: asset(img.src),
+    }))
+  )
+})
+
 const widths = [52, 40, 62, 45, 56, 38, 58, 48, 55, 42]
 
 const progress = ref(0)
@@ -75,7 +85,7 @@ function scrollToTop() {
             <img
               :src="asset(img.src)"
               :alt="`Photo ${i + 1}`"
-              :loading="i === 0 ? 'eager' : 'lazy'"
+              :loading="i < 9 ? 'eager' : 'lazy'"
               :fetchpriority="i === 0 ? 'high' : 'auto'"
               decoding="async"
               :style="{ transform: img.rotate ? `rotate(${img.rotate}deg)` : undefined }"
